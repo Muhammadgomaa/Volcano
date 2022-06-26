@@ -1,0 +1,292 @@
+﻿@using Volcano.Models;
+
+@{
+    DB_Context dB = new DB_Context();
+    ViewBag.Title = "Summary";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    List<Volcano.Models.Member> members = dB.Members.Where(n => n.Role == "User").ToList();
+    List<Volcano.Models.Shipping_Detail> orders =  dB.Shipping_Detail.ToList();
+    List<Volcano.Models.Category_Detail> categories = dB.Category_Detail.ToList();
+    List<Volcano.Models.Product_Detail> products = dB.Product_Detail.ToList();
+    List<Volcano.Models.Shipping_Detail> totalAmount = dB.Shipping_Detail.ToList();
+    double Total = 0;
+    for(int i=0;i<totalAmount.Count();i++)
+    {
+        Total += totalAmount[i].AmountPaid;
+    }
+    double MaxValue = dB.Shipping_Detail.Select(n=>n.AmountPaid).Max();
+    double MinValue = dB.Shipping_Detail.Select(n => n.AmountPaid).Min();
+
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Summary</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="robots" content="all,follow">
+    <!-- Google fonts - Poppins -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,700">
+    <!-- Choices CSS-->
+    <link rel="stylesheet" href="~/Summary/vendor/choices.js/public/assets/styles/choices.min.css">
+    <!-- theme stylesheet-->
+    <link rel="stylesheet" href="~/Summary/css/style.default.css" id="theme-stylesheet">
+    <!-- Custom stylesheet - for your changes-->
+    <link rel="stylesheet" href="~/Summary/css/custom.css">
+    <!-- Favicon-->
+    <link rel="shortcut icon" href="~/Summary/img/favicon.ico">
+    <!-- Tweaks for older IEs-->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script><![endif]-->
+</head>
+<body>
+   <div class="page">
+        <!-- Main Navbar-->
+       <div class="container-fluid px-4">
+           <div class="page-content d-flex align-items-stretch">
+
+               <div class="content-inner w-100">
+                   <!-- Page Header-->
+                   <header class="bg-white shadow-sm px-4 py-3 z-index-20">
+                       <h1 class="mt-4">Dashboard</h1>
+                       <ol class="breadcrumb mb-4">
+                           <li class="breadcrumb-item"><a href="~/Admin/Dashboard">Dashboard</a></li>
+                           <li class="breadcrumb-item active">Summary</li>
+                       </ol>
+                   </header>
+                   <!-- Dashboard Counts Section-->
+                   <section class="pb-0">
+                       <div class="container-fluid">
+                           <div class="card mb-0">
+                               <div class="card-body">
+                                   <div class="row gx-5 bg-white">
+                                       <!-- Item -->
+                                       <div class="col-xl-3 col-sm-6 py-4 border-lg-end border-gray-200">
+                                           <div class="d-flex align-items-center">
+                                               <div class="icon flex-shrink-0 bg-violet">
+                                                   <svg class="svg-icon svg-icon-sm svg-icon-heavy">
+                                                       <use xlink:href="#user-1"> </use>
+                                                   </svg>
+                                               </div>
+                                               <div class="mx-3">
+                                                   <h6 class="h4 fw-light text-gray-600 mb-3">New<br>Clients</h6>
+                                                   <div class="progress" style="height: 4px">
+                                                       <div class="progress-bar bg-violet" role="progressbar" style="width: 25%; height: 4px;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                                                   </div>
+                                               </div>
+                                               <div class="number"><strong class="text-lg">@members.Count()</strong></div>
+                                           </div>
+                                       </div>
+                                       <!-- Item -->
+                                       <div class="col-xl-3 col-sm-6 py-4 border-lg-end border-gray-200">
+                                           <div class="d-flex align-items-center">
+                                               <div class="icon flex-shrink-0 bg-red">
+                                                   <svg class="svg-icon svg-icon-sm svg-icon-heavy">
+                                                       <use xlink:href="#survey-1"> </use>
+                                                   </svg>
+                                               </div>
+                                               <div class="mx-3">
+                                                   <h6 class="h4 fw-light text-gray-600 mb-3">Work<br>Orders</h6>
+                                                   <div class="progress" style="height: 4px">
+                                                       <div class="progress-bar bg-red" role="progressbar" style="width: 70%; height: 4px;" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100"></div>
+                                                   </div>
+                                               </div>
+                                               <div class="number"><strong class="text-lg">@orders.Count()</strong></div>
+                                           </div>
+                                       </div>
+                                       <!-- Item -->
+                                       <div class="col-xl-3 col-sm-6 py-4 border-lg-end border-gray-200">
+                                           <div class="d-flex align-items-center">
+                                               <div class="icon flex-shrink-0 bg-green">
+                                                   <svg class="svg-icon svg-icon-sm svg-icon-heavy">
+                                                       <use xlink:href="#numbers-1"> </use>
+                                                   </svg>
+                                               </div>
+                                               <div class="mx-3">
+                                                   <h6 class="h4 fw-light text-gray-600 mb-3">Products<br>Available</h6>
+                                                   <div class="progress" style="height: 4px">
+                                                       <div class="progress-bar bg-green" role="progressbar" style="width: 40%; height: 4px;" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"></div>
+                                                   </div>
+                                               </div>
+                                               <div class="number"><strong class="text-lg">@products.Count()</strong></div>
+                                           </div>
+                                       </div>
+                                       <!-- Item -->
+                                       <div class="col-xl-3 col-sm-6 py-4">
+                                           <div class="d-flex align-items-center">
+                                               <div class="icon flex-shrink-0 bg-orange">
+                                                   <svg class="svg-icon svg-icon-sm svg-icon-heavy">
+                                                       <use xlink:href="#list-details-1"> </use>
+                                                   </svg>
+                                               </div>
+                                               <div class="mx-3">
+                                                   <h6 class="h4 fw-light text-gray-600 mb-3">Products<br>Categories</h6>
+                                                   <div class="progress" style="height: 4px">
+                                                       <div class="progress-bar bg-orange" role="progressbar" style="width: 50%; height: 4px;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                                                   </div>
+                                               </div>
+                                               <div class="number"><strong class="text-lg">@categories.Count()</strong></div>
+                                           </div>
+                                       </div>
+                                   </div>
+                               </div>
+                           </div>
+                       </div>
+                   </section>
+                   <!-- Dashboard Header Section    -->
+                   <section class="pb-0">
+                       <div class="container-fluid">
+                           <div class="row align-items-stretch">
+                               <!-- Statistics -->
+                               <div class="col-lg-6 col-12">
+                                   <div class="card mb-3">
+                                       <div class="card-body">
+                                           <div class="d-flex align-items-center">
+                                               <div class="icon flex-shrink-0 bg-red"><i class="fas fa-tasks"></i></div>
+                                               <div class="ms-3"><strong class="text-lg d-block lh-1 mb-1">234</strong><small class="text-uppercase text-gray-500 small d-block lh-1">Volcano</small></div>
+                                           </div>
+                                       </div>
+                                   </div>
+                                   <div class="card mb-3">
+                                       <div class="card-body">
+                                           <div class="d-flex align-items-center">
+                                               <div class="icon flex-shrink-0 bg-green"><i class="far fa-calendar"></i></div>
+                                               <div class="ms-3"><strong class="text-lg d-block lh-1 mb-1">152</strong><small class="text-uppercase text-gray-500 small d-block lh-1">Volcano</small></div>
+                                           </div>
+                                       </div>
+                                   </div>
+                                   <div class="card mb-0">
+                                       <div class="card-body">
+                                           <div class="d-flex align-items-center">
+                                               <div class="icon flex-shrink-0 bg-orange"><i class="far fa-paper-plane"></i></div>
+                                               <div class="ms-3"><strong class="text-lg d-block lh-1 mb-1">147</strong><small class="text-uppercase text-gray-500 small d-block lh-1">Volcano</small></div>
+                                           </div>
+                                       </div>
+                                   </div>
+                               </div>
+                               <div class="col-lg-6 col-12">
+                                   <div class="card mb-3">
+                                       <div class="card-body">
+                                           <div class="d-flex align-items-center">
+                                               <div class="icon flex-shrink-0 bg-red"><i class="fas fa-tasks"></i></div>
+                                               <div class="ms-3"><strong class="text-lg d-block lh-1 mb-1">234</strong><small class="text-uppercase text-gray-500 small d-block lh-1">Volcano</small></div>
+                                           </div>
+                                       </div>
+                                   </div>
+                                   <div class="card mb-3">
+                                       <div class="card-body">
+                                           <div class="d-flex align-items-center">
+                                               <div class="icon flex-shrink-0 bg-green"><i class="far fa-calendar"></i></div>
+                                               <div class="ms-3"><strong class="text-lg d-block lh-1 mb-1">152</strong><small class="text-uppercase text-gray-500 small d-block lh-1">Volcano</small></div>
+                                           </div>
+                                       </div>
+                                   </div>
+                                   <div class="card mb-0">
+                                       <div class="card-body">
+                                           <div class="d-flex align-items-center">
+                                               <div class="icon flex-shrink-0 bg-orange"><i class="far fa-paper-plane"></i></div>
+                                               <div class="ms-3"><strong class="text-lg d-block lh-1 mb-1">147</strong><small class="text-uppercase text-gray-500 small d-block lh-1">Volcano</small></div>
+                                           </div>
+                                       </div>
+                                   </div>
+                               </div>
+                           </div>
+                       </div>
+                   </section>
+                  
+                   <!-- Client Section-->
+                   <section class="pb-0">
+                       <div class="container-fluid">
+                           <div class="row gy-4">
+                               <!-- Total Overdue             -->
+                               <div class="col-lg-4">
+                                   <div class="card mb-0">
+                                       <div class="card-close">
+                                           <div class="dropdown">
+                                               <button class="dropdown-toggle text-sm" type="button" id="closeCard1" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></button>
+                                               <div class="dropdown-menu dropdown-menu-end shadow-sm" aria-labelledby="closeCard1"><a class="dropdown-item py-1 px-3 remove" href="#"> <i class="fas fa-times"></i>Close</a><a class="dropdown-item py-1 px-3 edit" href="#"> <i class="fas fa-cog"></i>Edit</a></div>
+                                           </div>
+                                       </div>
+                                       <div class="card-body d-flex flex-column">
+                                           <h3>Total Sales</h3>
+                                           <p class="text-xl text-center fw-normal">@Total.ToString("0.00") "L.E"</p>
+                                       </div>
+                                   </div>
+                               </div>
+
+                               <!-- Total Overdue             -->
+                               <div class="col-lg-4">
+                                   <div class="card mb-0">
+                                       <div class="card-close">
+                                           <div class="dropdown">
+                                               <button class="dropdown-toggle text-sm" type="button" id="closeCard1" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></button>
+                                               <div class="dropdown-menu dropdown-menu-end shadow-sm" aria-labelledby="closeCard1"><a class="dropdown-item py-1 px-3 remove" href="#"> <i class="fas fa-times"></i>Close</a><a class="dropdown-item py-1 px-3 edit" href="#"> <i class="fas fa-cog"></i>Edit</a></div>
+                                           </div>
+                                       </div>
+                                       <div class="card-body d-flex flex-column">
+                                           <h3>Lowest Order</h3>
+                                           <p class="text-xl text-center fw-normal">@MinValue.ToString("0.00") "L.E"</p>
+                                       </div>
+                                   </div>
+                               </div>
+
+                               <!-- Total Overdue             -->
+                               <div class="col-lg-4">
+                                   <div class="card mb-0">
+                                       <div class="card-close">
+                                           <div class="dropdown">
+                                               <button class="dropdown-toggle text-sm" type="button" id="closeCard1" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></button>
+                                               <div class="dropdown-menu dropdown-menu-end shadow-sm" aria-labelledby="closeCard1"><a class="dropdown-item py-1 px-3 remove" href="#"> <i class="fas fa-times"></i>Close</a><a class="dropdown-item py-1 px-3 edit" href="#"> <i class="fas fa-cog"></i>Edit</a></div>
+                                           </div>
+                                       </div>
+                                       <div class="card-body d-flex flex-column">
+                                           <h3>Highest Order</h3>
+                                           <p class="text-xl text-center fw-normal">@MaxValue.ToString("0.00") "L.E"</p>
+                                       </div>
+                                   </div>
+                               </div>
+                           </div>
+                       </div>
+                   </section>
+               </div>
+           </div>
+       </div>
+        </div>
+    <!-- JavaScript files-->
+    <script src="~/Summary/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="~/Summary/vendor/chart.js/Chart.min.js"></script>
+    <script src="~/Summary/vendor/just-validate/js/just-validate.min.js"></script>
+    <script src="~/Summary/vendor/choices.js/public/assets/scripts/choices.min.js"></script>
+    <script src="~/Summary/js/charts-home.js"></script>
+    <!-- Main File-->
+    <script src="~/Summary/js/front.js"></script>
+    <script>// ------------------------------------------------------- //
+      //   Inject SVG Sprite -
+      //   see more here
+      //   https://css-tricks.com/ajaxing-svg-sprite/
+      // ------------------------------------------------------ //
+      function injectSvgSprite(path) {
+
+          var ajax = new XMLHttpRequest();
+          ajax.open("GET", path, true);
+          ajax.send();
+          ajax.onload = function(e) {
+          var div = document.createElement("div");
+          div.className = 'd-none';
+          div.innerHTML = ajax.responseText;
+          document.body.insertBefore(div, document.body.childNodes[0]);
+          }
+      }
+      // this is set to BootstrapTemple website as you cannot
+      // inject local SVG sprite (using only 'icons/orion-svg-sprite.svg' path)
+      // while using file:// protocol
+      // pls don't forget to change to your domain :)
+      injectSvgSprite('https://bootstraptemple.com/files/icons/orion-svg-sprite.svg');</script>
+    <!-- FontAwesome CSS - loading as last, so it doesn't block rendering-->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+</body>
+</html>

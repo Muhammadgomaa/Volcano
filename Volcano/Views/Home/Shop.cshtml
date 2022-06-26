@@ -1,0 +1,282 @@
+﻿@using Volcano.Models;
+
+@{
+    ViewBag.Title = "Shop";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    List<Volcano.Models.Product_Detail> products = ViewBag.Prods;
+}
+
+<div class="all-title-box">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <h2>SHOP</h2>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="">Home</a></li>
+                    <li class="breadcrumb-item active">Shop</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Start Products  -->
+<div class="products-box">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="title-all text-center">
+                    <h1>Fruits & Vegetables</h1>
+                    <p>Best and Fresh Material Here.</p>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="special-menu text-center">
+                    <div class="button-group filter-button-group">
+                        <button class="active" data-filter="*">All</button>
+                        <button data-filter=".flowers">Flowers</button>
+                        <button data-filter=".roots">Roots</button>
+                        <button data-filter=".leaves">Leaves</button>
+                        <button data-filter=".pods">Pods</button>
+                        <button data-filter=".fungi">Fungi</button>
+                        <button data-filter=".fruits">Fruits(Vegetables)</button>
+                        <button data-filter=".bulbs">Bulbs</button>
+                        <button data-filter=".berry">Berry</button>
+                        <button data-filter=".durpe">Durpe</button>
+                        <button data-filter=".nuts">Nuts</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row special-list">
+
+            @for (int i = 0; i < products.Count; i++)
+            {
+                if (products[i].Category_Detail.Cat_Name == "Flowers")
+                {
+                    <div class="col-lg-3 col-md-6 special-grid flowers">
+                        <div class="products-single fix">
+                            <div class="box-img-hover">
+                                <div class="type-lb">
+                                    <p class="sale">@products[i].Category_Detail.Cat_Name</p>
+                                </div>
+
+                                <img src="~/Attach/@products[i].Prod_Image" class="img-fluid" alt="Image">
+                                <div class="mask-icon">
+                                    <a class="cart" href="">@Html.ActionLink("Add to Cart", "AddCart", new { id = products[i].Prod_ID }, new { @class = "cart" })</a>
+                                </div>
+                            </div>
+                            <div class="why-text">
+                                <h4>@products[i].Prod_Name</h4>
+                                <h5>@products[i].Price "L.E"</h5>
+                            </div>
+                        </div>
+                    </div>
+                }
+
+                if (products[i].Category_Detail.Cat_Name == "Roots")
+                {
+                    <div class="col-lg-3 col-md-6 special-grid roots">
+                        <div class="products-single fix">
+                            <div class="box-img-hover">
+                                <div class="type-lb">
+                                    <p class="sale">@products[i].Category_Detail.Cat_Name</p>
+                                </div>
+
+                                <img src="~/Attach/@products[i].Prod_Image" class="img-fluid" alt="Image">
+                                <div class="mask-icon">
+                                    <a class="cart" href="">@Html.ActionLink("Add to Cart", "AddCart", new { id = products[i].Prod_ID }, new { @class = "cart" })</a>
+                                </div>
+                            </div>
+                            <div class="why-text">
+                                <h4>@products[i].Prod_Name</h4>
+                                <h5>@products[i].Price "L.E"</h5>
+                            </div>
+                        </div>
+                    </div>
+                }
+
+                if (products[i].Category_Detail.Cat_Name == "Leaves")
+                {
+                    <div class="col-lg-3 col-md-6 special-grid leaves">
+                        <div class="products-single fix">
+                            <div class="box-img-hover">
+                                <div class="type-lb">
+                                    <p class="sale">@products[i].Category_Detail.Cat_Name</p>
+                                </div>
+
+                                <img src="~/Attach/@products[i].Prod_Image" class="img-fluid" alt="Image">
+                                <div class="mask-icon">
+                                    <a class="cart" href="">@Html.ActionLink("Add to Cart", "AddCart", new { id = products[i].Prod_ID }, new { @class = "cart" })</a>
+                                </div>
+                            </div>
+                            <div class="why-text">
+                                <h4>@products[i].Prod_Name</h4>
+                                <h5>@products[i].Price "L.E"</h5>
+                            </div>
+                        </div>
+                    </div>
+                }
+
+                if (products[i].Category_Detail.Cat_Name == "Pods")
+                {
+                    <div class="col-lg-3 col-md-6 special-grid pods">
+                        <div class="products-single fix">
+                            <div class="box-img-hover">
+                                <div class="type-lb">
+                                    <p class="sale">@products[i].Category_Detail.Cat_Name</p>
+                                </div>
+
+                                <img src="~/Attach/@products[i].Prod_Image" class="img-fluid" alt="Image">
+                                <div class="mask-icon">
+                                    <a class="cart" href="">@Html.ActionLink("Add to Cart", "AddCart", new { id = products[i].Prod_ID }, new { @class = "cart" })</a>
+                                </div>
+                            </div>
+                            <div class="why-text">
+                                <h4>@products[i].Prod_Name</h4>
+                                <h5>@products[i].Price "L.E"</h5>
+                            </div>
+                        </div>
+                    </div>
+                }
+
+                if (products[i].Category_Detail.Cat_Name == "Fungi")
+                {
+                    <div class="col-lg-3 col-md-6 special-grid fungi">
+                        <div class="products-single fix">
+                            <div class="box-img-hover">
+                                <div class="type-lb">
+                                    <p class="sale">@products[i].Category_Detail.Cat_Name</p>
+                                </div>
+
+                                <img src="~/Attach/@products[i].Prod_Image" class="img-fluid" alt="Image">
+                                <div class="mask-icon">
+                                    <a class="cart" href="">@Html.ActionLink("Add to Cart", "AddCart", new { id = products[i].Prod_ID }, new { @class = "cart" })</a>
+                                </div>
+                            </div>
+                            <div class="why-text">
+                                <h4>@products[i].Prod_Name</h4>
+                                <h5>@products[i].Price "L.E"</h5>
+                            </div>
+                        </div>
+                    </div>
+                }
+
+                if (products[i].Category_Detail.Cat_Name == "Fruits(Vegetables)")
+                {
+                    <div class="col-lg-3 col-md-6 special-grid fruits">
+                        <div class="products-single fix">
+                            <div class="box-img-hover">
+                                <div class="type-lb">
+                                    <p class="sale">@products[i].Category_Detail.Cat_Name</p>
+                                </div>
+
+                                <img src="~/Attach/@products[i].Prod_Image" class="img-fluid" alt="Image">
+                                <div class="mask-icon">
+                                    <a class="cart" href="">@Html.ActionLink("Add to Cart", "AddCart", new { id = products[i].Prod_ID }, new { @class = "cart" })</a>
+                                </div>
+                            </div>
+                            <div class="why-text">
+                                <h4>@products[i].Prod_Name</h4>
+                                <h5>@products[i].Price "L.E"</h5>
+                            </div>
+                        </div>
+                    </div>
+                }
+
+                if (products[i].Category_Detail.Cat_Name == "Bulbs")
+                {
+                    <div class="col-lg-3 col-md-6 special-grid bulbs">
+                        <div class="products-single fix">
+                            <div class="box-img-hover">
+                                <div class="type-lb">
+                                    <p class="sale">@products[i].Category_Detail.Cat_Name</p>
+                                </div>
+
+                                <img src="~/Attach/@products[i].Prod_Image" class="img-fluid" alt="Image">
+                                <div class="mask-icon">
+                                    <a class="cart" href="">@Html.ActionLink("Add to Cart", "AddCart", new { id = products[i].Prod_ID }, new { @class = "cart" })</a>
+                                </div>
+                            </div>
+                            <div class="why-text">
+                                <h4>@products[i].Prod_Name</h4>
+                                <h5>@products[i].Price "L.E"</h5>
+                            </div>
+                        </div>
+                    </div>
+                }
+
+                if (products[i].Category_Detail.Cat_Name == "Berry")
+                {
+                    <div class="col-lg-3 col-md-6 special-grid berry">
+                        <div class="products-single fix">
+                            <div class="box-img-hover">
+                                <div class="type-lb">
+                                    <p class="sale">@products[i].Category_Detail.Cat_Name</p>
+                                </div>
+
+                                <img src="~/Attach/@products[i].Prod_Image" class="img-fluid" alt="Image">
+                                <div class="mask-icon">
+                                    <a class="cart" href="">@Html.ActionLink("Add to Cart", "AddCart", new { id = products[i].Prod_ID }, new { @class = "cart" })</a>
+                                </div>
+                            </div>
+                            <div class="why-text">
+                                <h4>@products[i].Prod_Name</h4>
+                                <h5>@products[i].Price "L.E"</h5>
+                            </div>
+                        </div>
+                    </div>
+                }
+
+                if (products[i].Category_Detail.Cat_Name == "Durpe")
+                {
+                    <div class="col-lg-3 col-md-6 special-grid durpe">
+                        <div class="products-single fix">
+                            <div class="box-img-hover">
+                                <div class="type-lb">
+                                    <p class="sale">@products[i].Category_Detail.Cat_Name</p>
+                                </div>
+
+                                <img src="~/Attach/@products[i].Prod_Image" class="img-fluid" alt="Image">
+                                <div class="mask-icon">
+                                    <a class="cart" href="">@Html.ActionLink("Add to Cart", "AddCart", new { id = products[i].Prod_ID }, new { @class = "cart" })</a>
+                                </div>
+                            </div>
+                            <div class="why-text">
+                                <h4>@products[i].Prod_Name</h4>
+                                <h5>@products[i].Price "L.E"</h5>
+                            </div>
+                        </div>
+                    </div>
+                }
+
+                if (products[i].Category_Detail.Cat_Name == "Nuts")
+                {
+                    <div class="col-lg-3 col-md-6 special-grid nuts">
+                        <div class="products-single fix">
+                            <div class="box-img-hover">
+                                <div class="type-lb">
+                                    <p class="sale">@products[i].Category_Detail.Cat_Name</p>
+                                </div>
+
+                                <img src="~/Attach/@products[i].Prod_Image" class="img-fluid" alt="Image">
+                                <div class="mask-icon">
+                                    <a class="cart" href="">@Html.ActionLink("Add to Cart", "AddCart", new { id = products[i].Prod_ID }, new { @class = "cart" })</a>
+                                </div>
+                            </div>
+                            <div class="why-text">
+                                <h4>@products[i].Prod_Name</h4>
+                                <h5>@products[i].Price "L.E"</h5>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+</div>
+<!-- End Products  -->

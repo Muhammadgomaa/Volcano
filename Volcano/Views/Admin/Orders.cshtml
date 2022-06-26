@@ -1,0 +1,75 @@
+﻿
+@{
+    ViewBag.Title = "Orders";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    List<Volcano.Models.Shipping_Detail> orders = ViewBag.Orders;
+
+}
+
+<div class="container-fluid px-4">
+
+    <h1 class="mt-4">Orders</h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item"><a href="~/Admin/Dashboard">Dashboard</a></li>
+        <li class="breadcrumb-item active">Orders</li>
+    </ol>
+    <div class="card mb-4">
+        <div class="card-header">
+            <i class="fas fa-table me-1"></i>
+            Shipping Details Table
+        </div>
+        <div class="card-body">
+            <table id="datatablesSimple">
+                <thead>
+                    <tr>
+                        <th>Shipping ID</th>
+                        <th>Member Name</th>
+                        <th>Member Address</th>
+                        <th>Member Area</th>
+                        <th>Member City</th>
+                        <th>Member Country</th>
+                        <th>Member Phone</th>
+                        <th>Amount Paid</th>
+                        <th>Payment Method</th>
+                        <th>Date</th>
+                        <th>Time</th>
+                    </tr>
+                </thead>
+                <tfoot>
+                    <tr>
+                        <th>Shipping ID</th>
+                        <th>Member Name</th>
+                        <th>Member Address</th>
+                        <th>Member Area</th>
+                        <th>Member City</th>
+                        <th>Member Country</th>
+                        <th>Member Phone</th>
+                        <th>Amount Paid</th>
+                        <th>Payment Method</th>
+                        <th>Date</th>
+                        <th>Time</th>
+                    </tr>
+                </tfoot>
+                <tbody>
+                    @for (int i = 0; i < orders.Count; i++)
+                    {
+                    <tr>
+                        <td>@orders[i].Shipping_ID</td>
+                        <td>@orders[i].Member.First_Name  @orders[i].Member.Last_Name</td>
+                        <td>@orders[i].Address</td>
+                        <td>@orders[i].Area</td>
+                        <td>@orders[i].City</td>
+                        <td>@orders[i].Country</td>
+                        <td>@orders[i].Member.Phone</td>
+                        <td>@orders[i].AmountPaid.ToString("0.00")</td>
+                        <td>@orders[i].Payment_Type</td>
+                        <td>@orders[i].Date</td>
+                        <td>@orders[i].Time</td>
+                    </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+

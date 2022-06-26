@@ -1,0 +1,56 @@
+﻿@{
+    ViewBag.Title = "Category";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    List<Volcano.Models.Category_Detail> categories = ViewBag.Catg;
+}
+
+<div class="container-fluid px-4">
+
+    <h1 class="mt-4">Category</h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item"><a href="~/Admin/Dashboard">Dashboard</a></li>
+        <li class="breadcrumb-item active">Category</li>
+    </ol>
+    <div class="card mb-4">
+        <div class="card-header">
+            <i class="fas fa-table me-1"></i>
+            Category Details Table
+            @Html.ActionLink("Add New", "AddCategory", "Admin",new { @style= "float:right;background-color:#ED9B83;border-color:#ED9B83;color:white", @class="btn btn-info" })
+        </div>
+        <div class="card-body">
+            <table id="datatablesSimple">
+                <thead>
+                    <tr>
+                        <th>Category ID</th>
+                        <th>Category Name</th>
+                        <th>Action</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tfoot>
+                    <tr>
+                        <th>Category ID</th>
+                        <th>Category Name</th>
+                        <th>Action</th>
+                        <th>Action</th>
+                    </tr>
+                </tfoot>
+                <tbody >
+                    @for(int i=0; i < categories.Count ; i++)
+            {
+                    <tr>
+                        <td>@categories[i].Cat_ID</td>
+                        <td>@categories[i].Cat_Name</td>
+                        <td>
+                            @Html.ActionLink("Edit", "UpdateCategory", new { id = categories[i].Cat_ID } , new { @style = "float:right;background-color:#ED9B83;border-color:#ED9B83;color:white", @class = "btn btn-info" })
+                        </td>
+                        <td>
+                            @Html.ActionLink("Delete", "DeleteCategory", new { id=categories[i].Cat_ID } ,new { @style = "float:left;background-color:#ED9B83;border-color:#ED9B83;color:white", @class = "btn btn-info" })
+                        </td>
+                    </tr>
+            }
+                </tbody>
+</table>
+</div>
+</div>
+</div>

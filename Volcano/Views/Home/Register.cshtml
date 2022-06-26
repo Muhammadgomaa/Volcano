@@ -1,0 +1,117 @@
+﻿@using Volcano.Models;
+@model Volcano.Models.Member
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Register Page</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--===============================================================================================-->
+    <link rel="icon" type="image/png" href="~/Login_Files/images/icons/favicon.ico" />
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="~/Login_Files/vendor/bootstrap/css/bootstrap.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="~/Login_Files/fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="~/Login_Files/fonts/Linearicons-Free-v1.0.0/icon-font.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="~/Login_Files/vendor/animate/animate.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="~/Login_Files/vendor/css-hamburgers/hamburgers.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="~/Login_Files/vendor/animsition/css/animsition.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="~/Login_Files/vendor/select2/select2.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="~/Login_Files/vendor/daterangepicker/daterangepicker.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="~/Login_Files/css/util.css">
+    <link rel="stylesheet" type="text/css" href="~/Login_Files/css/main.css">
+    <!--===============================================================================================-->
+    <link href="~/Content/bootstrap.css" rel="stylesheet" />
+    <script src="~/Scripts/jquery-3.4.1.js"></script>
+    <script src="~/Scripts/jquery.validate.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+
+</head>
+<body style="background-color: #666666;">
+
+    <div class="limiter">
+        <div class="container-login100">
+            <div class="wrap-login100">
+                <form class="login100-form validate-form" action="~/Home/Register" method="post">
+                    <span class="login100-form-title p-b-43">
+                        Register to join with us
+                    </span>
+
+
+                    <div class="wrap-input100 validate-input" data-validate="Valid email is required: ex@abc.xyz">
+                        @Html.TextBoxFor(n => n.Email, new { @class = "input100" })
+                        <span class="focus-input100"></span>
+                        <span class="label-input100">Email</span>
+                        @Html.ValidationMessageFor(n => n.Email, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="wrap-input100 validate-input" data-validate="Password is required">
+                        @Html.PasswordFor(n => n.Password, new { @class = "input100" })
+                        <span class="focus-input100"></span>
+                        <span class="label-input100">Password</span>
+                        @Html.ValidationMessageFor(n => n.Password, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="wrap-input100 validate-input" data-validate="First Name is required">
+                        @Html.TextBoxFor(n => n.First_Name, new { @class = "input100" })
+                        <span class="focus-input100"></span>
+                        <span class="label-input100">First Name</span>
+                        @Html.ValidationMessageFor(n => n.First_Name, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="wrap-input100 validate-input" data-validate="Last Name is required">
+                        @Html.TextBoxFor(n => n.Last_Name, new { @class = "input100" })
+                        <span class="focus-input100"></span>
+                        <span class="label-input100">Last Name</span>
+                        @Html.ValidationMessageFor(n => n.Last_Name, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="wrap-input100 validate-input" data-validate="Phone Number is required">
+                        @Html.TextBoxFor(n => n.Phone, new { @class = "input100" })
+                        <span class="focus-input100"></span>
+                        <span class="label-input100">Phone</span>
+                        @Html.ValidationMessageFor(n => n.Phone, "", new { @class = "text-danger" })
+                    </div>
+
+                    @Html.HiddenFor(n => n.Role, new { Value = "User" })
+
+                    <div class="container-login100-form-btn">
+                        <button class="login100-form-btn" style="background-color: #E1727F">
+                            Register
+                        </button>
+                    </div>
+                    <br />
+                    <label>
+                        @Html.ActionLink("Login", "Login", "Home", new { @class = "login100-form-btn", style = "text-align:center;font-size:14px;text-decoration:none;color:white;background-color: #E1727F;width:450px" })
+                    </label>
+                </form>
+                
+                <div class="login100-more" style="background-image: url('/Login_Files/images/back1.jpg');">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--===============================================================================================-->
+    <script src="~/Login_Files/vendor/jquery/jquery-3.2.1.min.js"></script>
+    <!--===============================================================================================-->
+    <script src="~/Login_Files/vendor/animsition/js/animsition.min.js"></script>
+    <!--===============================================================================================-->
+    <script src="~/Login_Files/vendor/bootstrap/js/popper.js"></script>
+    <script src="~/Login_Files/vendor/bootstrap/js/bootstrap.min.js"></script>
+    <!--===============================================================================================-->
+    <script src="~/Login_Files/vendor/select2/select2.min.js"></script>
+    <!--===============================================================================================-->
+    <script src="~/Login_Files/vendor/daterangepicker/moment.min.js"></script>
+    <script src="~/Login_Files/vendor/daterangepicker/daterangepicker.js"></script>
+    <!--===============================================================================================-->
+    <script src="~/Login_Files/vendor/countdowntime/countdowntime.js"></script>
+    <!--===============================================================================================-->
+    <script src="~/Login_Files/js/main.js"></script>
+
+</body>
+</html>
