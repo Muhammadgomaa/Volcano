@@ -25,7 +25,6 @@ namespace Volcano.Controllers
                 {
                     return Json(false, JsonRequestBehavior.AllowGet);
                 }
-
             }
             else
             {
@@ -42,14 +41,31 @@ namespace Volcano.Controllers
             }
         }
 
-
         public ActionResult Login()
         {
             //if coockies founded in pc
             if (Request.Cookies["coockie"] != null)
             {
                 Session["memberid"] = Request.Cookies["coockie"].Values["id"];
-                return RedirectToAction("Index");
+                int id = int.Parse(Session["memberid"].ToString());
+
+                if (Session["memberid"] != null)
+                {
+                    Member member = dB.Members.Where(n => n.Member_ID == id).SingleOrDefault();
+
+                    if(member.Role == "Admin")
+                    {
+                        return RedirectToAction("Dashboard","Admin");
+                    }
+                    else if(member.Role == "User")
+                    {
+                        return RedirectToAction("Index");
+                    }
+                }
+                else
+                {
+                    return RedirectToAction("Login");
+                }
             }
 
             return View();
@@ -58,9 +74,26 @@ namespace Volcano.Controllers
         [HttpPost]
         public ActionResult Login(Member member , string rememberme)
         {
-            Member member1 = dB.Members.Where(n => n.Email == member.Email && n.Password== member.Password).SingleOrDefault();
+            Member member1 = dB.Members.Where(n => n.Email == member.Email && n.Password == member.Password).SingleOrDefault();
 
-            if (member1 != null)
+            if (member1 != null && member1.Role == "Admin")
+            {
+                Session.Add("memberid", member1.Member_ID);
+
+                //cookie 
+                //if checkbox is checked
+                if (rememberme == "true")
+                {
+                    HttpCookie cookie = new HttpCookie("coockie"); //create file
+                    cookie.Values.Add("id", member1.Member_ID.ToString()); //save data
+                    cookie.Expires = DateTime.Now.AddDays(90); //expire date
+                    Response.Cookies.Add(cookie);
+                }
+
+                return RedirectToAction("Dashboard","Admin");
+            }
+
+            else if (member1 != null && member1.Role == "User")
             {
                 Session.Add("memberid", member1.Member_ID);
 
@@ -76,6 +109,7 @@ namespace Volcano.Controllers
 
                 return RedirectToAction("Index");
             }
+
             else
             {
                 ViewBag.status = "Invalid Username or Password";
@@ -86,6 +120,7 @@ namespace Volcano.Controllers
         public ActionResult Logout()
         {
             Session["memberid"] = null;
+            Session["cart"] = null;
             HttpCookie cookie = new HttpCookie("coockie"); //create file
             cookie.Expires = DateTime.Now.AddDays(-15); //expire date (to delete coockie)
             Response.Cookies.Add(cookie);
@@ -108,193 +143,307 @@ namespace Volcano.Controllers
 
         public ActionResult Index()
         {
-            return View();
-        }
-
-        public ActionResult Shop()
-        {
-            ViewBag.Prods = dB.Product_Detail.ToList();
-            return View();
+            if (Session["memberid"] != null)
+            {
+                return View();
+            }
+            else
+                return RedirectToAction("Login");
         }
 
         public ActionResult About()
         {
-            return View();
+            if (Session["memberid"] != null)
+            {
+                return View();
+            }
+            else
+                return RedirectToAction("Login");
+        }
+
+        public ActionResult Shop()
+        {
+            if (Session["memberid"] != null)
+            {
+                List<Product_Detail> products = dB.Product_Detail.Where(n=>n.Status == "Available").ToList();
+                List<Category_Detail> categories = dB.Category_Detail.ToList();
+
+                if (categories.Count != 0 && products.Count != 0 && Session["cart"] == null)
+                {
+                    ViewBag.Prods = products;
+                    ViewBag.Catg = categories;
+                    ViewBag.List = new List<Items>();
+                    return View();
+                }
+                else if (categories.Count != 0 && products.Count != 0 && Session["cart"] != null)
+                {
+                    ViewBag.Prods = products;
+                    ViewBag.Catg = categories;
+                    ViewBag.List = (List<Items>)Session["cart"];
+                    return View();
+                }
+                else if (categories.Count != 0 && products.Count == 0 && Session["cart"] == null)
+                {
+                    ViewBag.Prods = new List<Product_Detail>();
+                    ViewBag.Catg = categories;
+                    ViewBag.List = new List<Items>();
+                    return View();
+                }
+                else if (categories.Count != 0 && products.Count == 0 && Session["cart"] != null)
+                {
+                    ViewBag.Prods = new List<Product_Detail>();
+                    ViewBag.Catg = categories;
+                    ViewBag.List = (List<Items>)Session["cart"];
+                    return View();
+                }
+                else
+                {
+                    ViewBag.Prods = new List<Product_Detail>();
+                    ViewBag.Catg = new List<Category_Detail>();
+                    return View();
+                }
+            }
+            else
+                return RedirectToAction("Login");
         }
 
         public ActionResult AddCart(int id)
         {
-            //First Item Added
-            if(Session["cart"] == null)
+            if (Session["memberid"] != null)
             {
-                List<Items> Cart = new List<Items>();
 
-                Product_Detail product = dB.Product_Detail.Where(n => n.Prod_ID == id).SingleOrDefault();
-
-                Cart.Add(new Items()
+                //First Item Added
+                if (Session["cart"] == null)
                 {
-                    Product = product,
-                    Quantity = 1
-                });
+                    List<Items> Cart = new List<Items>();
 
-                Session["cart"] = Cart;
-            }
-            
-            else
-            {
-                List<Items> Cart = (List<Items>)Session["cart"];
+                    Product_Detail product = dB.Product_Detail.Where(n => n.Prod_ID == id).SingleOrDefault();
 
-                //Avoid Duplicate
-                List<Items> Cart1 = Cart.Distinct().ToList();
-
-                Product_Detail product = dB.Product_Detail.Where(n => n.Prod_ID == id).SingleOrDefault();
-
-                foreach (var items in Cart1)
-                {
-                    if (items.Product.Prod_ID == id)
+                    Cart.Add(new Items()
                     {
-                        Cart1.Remove(items);
-                        Cart1.Add(new Items()
-                        {
-                            Product = product,
-                            Quantity = 1
-                        });
-                        break;   
-                    }
-                    else 
-                    {
-                        Cart1.Add(new Items()
-                        {
-                            Product = product,
-                            Quantity = 1
-                        });
-                        break; 
-                    }
+                        Product = product,
+                        Quantity = 1
+                    });
+
+                    Session["cart"] = Cart;
                 }
 
-                Session["cart"] = Cart1;
-            }
+                else
+                {
+                    List<Items> Cart = (List<Items>)Session["cart"];
 
-            return RedirectToAction("Shop");
+                    Product_Detail product = dB.Product_Detail.Where(n => n.Prod_ID == id).SingleOrDefault();
+
+                    Cart.Add(new Items()
+                    {
+                        Product = product,
+                        Quantity = 1
+                    });
+
+                    Session["cart"] = Cart;
+                }
+
+                return RedirectToAction("Shop");
+
+            }
+            else
+                return RedirectToAction("Login");
         }
 
         public ActionResult RemoveCart(int id)
         {
-            List<Items> Cart = (List<Items>)Session["cart"];
+            if (Session["memberid"] != null)
+            {
+                List<Items> Cart = (List<Items>)Session["cart"];
 
-            for(int i = 0; i < Cart.Count; i++)
-            {
-                if(Cart[i].Product.Prod_ID == id)
+                for (int i = 0; i < Cart.Count; i++)
                 {
-                    Cart.Remove(Cart[i]);
-                    break;
+                    if (Cart[i].Product.Prod_ID == id)
+                    {
+                        Cart.Remove(Cart[i]);
+                        break;
+                    }
                 }
-            }
-            if(Cart.Count == 0)
-            {
-                Session["cart"] = null;
+                if (Cart.Count == 0)
+                {
+                    Session["cart"] = null;
+                }
+                else
+                {
+                    Session["cart"] = Cart;
+                }
+
+                return RedirectToAction("Shop");
             }
             else
-            {
-                Session["cart"] = Cart;
-            }
-
-            return RedirectToAction("Shop");
+                return RedirectToAction("Login");
         }
 
         public ActionResult Checkout()
         {
-            return View();
-        }
-
-        public ActionResult CheckoutDetails()
-        {
-            return View();
+            if (Session["memberid"] != null)
+            {
+                return View();
+            }
+            else
+                return RedirectToAction("Login");
         }
 
         public ActionResult IncreaseQuantity(int id)
         {
-            if (Session["cart"] != null)
+            if (Session["memberid"] != null)
             {
-                List<Items> Cart = (List<Items>)Session["cart"];
-
-                Product_Detail product = dB.Product_Detail.Where(n => n.Prod_ID == id).SingleOrDefault();
-
-                foreach (var items in Cart)
+                if (Session["cart"] != null)
                 {
-                    if (items.Product.Prod_ID == id)
-                    {
-                        int prevQty = items.Quantity;
-                        Cart.Remove(items);
-                        Cart.Add(new Items()
-                        {
-                            Product = product,
-                            Quantity = prevQty + 1
-                        });
-                        break;
-                    }
-                }
+                    List<Items> Cart = (List<Items>)Session["cart"];
 
-                Session["cart"] = Cart;
+                    Product_Detail product = dB.Product_Detail.Where(n => n.Prod_ID == id).SingleOrDefault();
+
+                    foreach (var items in Cart)
+                    {
+                        if (items.Product.Prod_ID == id)
+                        {
+                            int prevQty = items.Quantity;
+                            Cart.Remove(items);
+                            Cart.Add(new Items()
+                            {
+                                Product = product,
+                                Quantity = prevQty + 1
+                            });
+                            break;
+                        }
+                    }
+
+                    Session["cart"] = Cart;
+                }
+                return RedirectToAction("Checkout");
             }
-            return RedirectToAction("Checkout");
+            else
+                return RedirectToAction("Login");
         }
 
         public ActionResult DecreaseQuantity(int id)
         {
-            if (Session["cart"] != null)
+           if (Session["memberid"] != null) 
             {
-                List<Items> Cart = (List<Items>)Session["cart"];
-
-                Product_Detail product = dB.Product_Detail.Where(n => n.Prod_ID == id).SingleOrDefault();
-
-                foreach (var items in Cart)
+                if (Session["cart"] != null)
                 {
-                    if (items.Product.Prod_ID == id)
-                    {
-                        int prevQty = items.Quantity;
-                        Cart.Remove(items);
-                        Cart.Add(new Items()
-                        {
-                            Product = product,
-                            Quantity = prevQty - 1
-                        });
-                        break;
-                    }
-                }
+                    List<Items> Cart = (List<Items>)Session["cart"];
 
-                Session["cart"] = Cart;
+                    Product_Detail product = dB.Product_Detail.Where(n => n.Prod_ID == id).SingleOrDefault();
+
+                    foreach (var items in Cart)
+                    {
+                        if (items.Product.Prod_ID == id)
+                        {
+                            int prevQty = items.Quantity;
+                            Cart.Remove(items);
+                            Cart.Add(new Items()
+                            {
+                                Product = product,
+                                Quantity = prevQty - 1
+                            });
+                            break;
+                        }
+                    }
+
+                    Session["cart"] = Cart;
+                }
+                return RedirectToAction("Checkout");
             }
-            return RedirectToAction("Checkout");
+            else
+                return RedirectToAction("Login");
+        }
+
+        public ActionResult CheckoutDetails()
+        {
+            if (Session["memberid"] != null)
+            {
+                int id = int.Parse(Session["memberid"].ToString());
+                Member member = dB.Members.Where(n => n.Member_ID == id).SingleOrDefault();
+
+                return View(member);
+            }
+            else
+                return RedirectToAction("Login");
         }
 
         public ActionResult ShippingDetails(Shipping_Detail shipping)
         {
 
-            dB.Shipping_Detail.Add(shipping);
-            dB.SaveChanges();
+            if (Session["memberid"] != null)
+            {
+                dB.Shipping_Detail.Add(shipping);
+                dB.SaveChanges();
 
-            Session["cart"] = null;
+                foreach(Items items in (List<Items>)Session["cart"])
+                {
+                    double total = items.Quantity * items.Product.Price;
 
-            return RedirectToAction("Index");
+                    Invoice_Detail invoice = new Invoice_Detail();
+
+                    invoice.Shipping_ID = shipping.Shipping_ID;
+                    invoice.Prod_ID = items.Product.Prod_ID;
+                    invoice.Quantity = items.Quantity.ToString();
+                    invoice.Price = total;
+
+                    dB.Invoice_Detail.Add(invoice);
+                    dB.SaveChanges();
+                }
+
+                Session["cart"] = null;
+
+                return RedirectToAction("Index");
+            }
+            else
+                return RedirectToAction("Login");
         }
 
         public ActionResult Account()
         {
-            return View();
+            if (Session["memberid"] != null)
+            {
+                return View();
+            }
+            else
+                return RedirectToAction("Login");
         }
 
         public ActionResult Orders()
         {
-            return View();
+            if (Session["memberid"] != null)
+            {
+                int id = int.Parse(Session["memberid"].ToString());
+                ViewBag.Orders = dB.Shipping_Detail.Where(n => n.Member_ID == id).ToList();
+
+                return View();
+            }
+            else
+                return RedirectToAction("Login");
+        }
+
+        public ActionResult Invoice(int id)
+        {
+            if (Session["memberid"] != null)
+            {
+                ViewBag.Invoice = dB.Invoice_Detail.Where(n => n.Shipping_ID == id).ToList();
+                return View();
+            }
+            else
+                return RedirectToAction("Login");
         }
 
         public ActionResult UpdateInformation()
         {
-            int id = int.Parse(Session["memberid"].ToString());
-            Member member = dB.Members.Where(n => n.Member_ID == id).FirstOrDefault();
+            if (Session["memberid"] != null)
+            {
+                int id = int.Parse(Session["memberid"].ToString());
+                Member member = dB.Members.Where(n => n.Member_ID == id).FirstOrDefault();
 
-            return View(member);
+                return View(member);
+            }
+            else
+                return RedirectToAction("Login");
         }
 
         [HttpPost]
@@ -305,6 +454,7 @@ namespace Volcano.Controllers
             member1.First_Name = member.First_Name;
             member1.Last_Name = member.Last_Name;
             member1.Password = member.Password;
+            member1.ConfirmPassword = member.ConfirmPassword;
             member1.Email = member.Email;
             member1.Role = member.Role;
             member1.Phone = member.Phone;
@@ -316,10 +466,15 @@ namespace Volcano.Controllers
 
         public ActionResult UpdatePassword()
         {
-            int id = int.Parse(Session["memberid"].ToString());
-            Member member = dB.Members.Where(n => n.Member_ID == id).FirstOrDefault();
+            if (Session["memberid"] != null)
+            {
+                int id = int.Parse(Session["memberid"].ToString());
+                Member member = dB.Members.Where(n => n.Member_ID == id).FirstOrDefault();
 
-            return View(member);
+                return View(member);
+            }
+            else
+                return RedirectToAction("Login");
         }
 
         [HttpPost]
@@ -330,6 +485,7 @@ namespace Volcano.Controllers
             member1.First_Name = member.First_Name;
             member1.Last_Name = member.Last_Name;
             member1.Password = member.Password;
+            member1.ConfirmPassword = member.ConfirmPassword;
             member1.Email = member.Email;
             member1.Role = member.Role;
             member1.Phone = member.Phone;
@@ -337,6 +493,36 @@ namespace Volcano.Controllers
             dB.SaveChanges();
 
             return RedirectToAction("Account");
+        }
+
+        public ActionResult AddMember()
+        {
+            if (Session["memberid"] != null)
+            {
+                int id = int.Parse(Session["memberid"].ToString());
+                Member member = dB.Members.Where(n => n.Member_ID == id).SingleOrDefault();
+
+                if (member.Role == "User")
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+                else if (member.Role == "Admin")
+                {
+                    return View();
+                }
+                return View();
+            }
+            else
+                return RedirectToAction("Login");
+        }
+
+        [HttpPost]
+        public ActionResult AddMember(Member member)
+        {
+            dB.Members.Add(member);
+            dB.SaveChanges();
+
+            return RedirectToAction("Accounts", "Admin");
         }
     }
 }

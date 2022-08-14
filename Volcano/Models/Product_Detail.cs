@@ -12,7 +12,7 @@ namespace Volcano.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Product_Detail()
         {
-            Carts = new HashSet<Cart>();
+            Invoice_Detail = new HashSet<Invoice_Detail>();
         }
 
         [Key]
@@ -20,35 +20,28 @@ namespace Volcano.Models
 
         [Required(ErrorMessage = "Product Name is Required")]
         [Remote("CheckProduct", "Admin", ErrorMessage = "This Product is Already Exist", AdditionalFields = "Prod_ID")]
-        [StringLength(250, ErrorMessage = "Invalid Product Name", MinimumLength = 3)]
+        [StringLength(50, ErrorMessage = "Please Enter Valid Product Name", MinimumLength = 3)]
         public string Prod_Name { get; set; }
 
-        [Required(ErrorMessage = "Category Name is Required")]
+
         public long Cat_ID { get; set; }
 
-        public bool? IsActive { get; set; }
-
-        public bool? IsDelete { get; set; }
-
-        [Required(ErrorMessage = "Description is Required")]
-        public string Description { get; set; }
-
-        [Required(ErrorMessage = "Product Image is Required")]
+        [StringLength(50)]
         public string Prod_Image { get; set; }
 
-        public bool? IsFeatured { get; set; }
-
-        [Required(ErrorMessage = "Quantity is Required")]
-        [Range(1, 90000, ErrorMessage = "Invalid Quantity")]
-        public long Quantity { get; set; }
-
-        [Required(ErrorMessage = "Price is Required")]
-        [Range(1, 200000, ErrorMessage = "Invalid Price")]
+        [Required(ErrorMessage = "Product Price is Required")]
+        [RegularExpression(@"^-?[0-9][0-9,\.]+$", ErrorMessage = "Please Enter Valid Price")]
+        [Range(1, 1000000000)]
         public double Price { get; set; }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Cart> Carts { get; set; }
+        [Required(ErrorMessage = "Product Status is Required")]
+        [StringLength(50)]
+        public string Status { get; set; }
+        [Required(ErrorMessage = "Product Name is Required")]
 
         public virtual Category_Detail Category_Detail { get; set; }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Invoice_Detail> Invoice_Detail { get; set; }
     }
 }

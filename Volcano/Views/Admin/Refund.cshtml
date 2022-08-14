@@ -1,0 +1,74 @@
+﻿@model Volcano.Models.Shipping_Detail
+
+@{
+    ViewBag.Title = "Refund";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    DateTime dateTime = DateTime.Now;
+    string RefundDate = dateTime.ToString("dd-MM-yyyy");
+    string RefundTime= dateTime.ToString("HH:mm");
+}
+
+<div class="container-fluid px-4">
+
+    <h1 class="mt-4">Order</h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item"><a href="~/Admin/Dashboard">Dashboard</a></li>
+        <li class="breadcrumb-item active">Refund Order</li>
+    </ol>
+
+    <div class="container-fluid px-1 py-5 mx-auto">
+        <div class="row d-flex justify-content-center">
+            <div class="col-xl-7 col-lg-8 col-md-9 col-11 text-center">
+                <h3>Refund Order</h3>
+                <div class="card">
+                    <h5 class="text-center mb-4">Volcano</h5>
+                    <form class="form-card" action="~/Admin/Refund" id="form1" method="post">
+                        <div class="row justify-content-between text-left">
+                            <div class="form-group col-sm-6 flex-column d-flex">
+
+                                @Html.HiddenFor(n => n.Member_ID)
+                                @Html.HiddenFor(n => n.Address)
+                                @Html.HiddenFor(n => n.Area)
+                                @Html.HiddenFor(n => n.City)
+                                @Html.HiddenFor(n => n.Country)
+
+                                <label class="form-control-label px-3">User First Name<span class="text-danger"> </span></label>
+                                <input type="text" value="@Model.Member.First_Name" readonly />
+
+                                <label class="form-control-label px-3">User Last Name<span class="text-danger"> </span></label>
+                                <input type="text" value="@Model.Member.Last_Name" readonly />
+
+                                <label class="form-control-label px-3">Total<span class="text-danger"> </span></label>
+                                <input type="text" value="@Model.AmountPaid" name="AmountPaid" readonly />
+
+                                <label class="form-control-label px-3">Payment Method<span class="text-danger"> </span></label>
+                                <input type="text" value="@Model.Payment_Type" name="Payment_Type" readonly />
+
+                                <label class="form-control-label px-3">Order Date<span class="text-danger"> </span></label>
+                                <input type="text" value="@Model.Date" name="Order_Date" readonly />
+
+                                <label class="form-control-label px-3">Refund Date<span class="text-danger"> </span></label>
+                                <input type="text" value="@RefundDate" name="Refund_Date" readonly />
+
+                                <label class="form-control-label px-3">Order Time<span class="text-danger"> </span></label>
+                                <input type="text" value="@Model.Time" name="Order_Time" readonly />
+
+                                <label class="form-control-label px-3">Refund Time<span class="text-danger"> </span></label>
+                                <input type="text" value="@RefundTime" name="Refund_Time" readonly />
+
+                                <input type="hidden" value="@Model.Shipping_ID" name="id" readonly />
+
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn-block btn-primary">Refund Order</button>
+
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+

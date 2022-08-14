@@ -137,48 +137,19 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\Cart.cs" />
-    <Compile Include="Models\CartStatu.cs" />
     <Compile Include="Models\Category_Detail.cs" />
     <Compile Include="Models\DB_Context.cs" />
+    <Compile Include="Models\Invoice_Detail.cs" />
     <Compile Include="Models\Items.cs" />
     <Compile Include="Models\Member.cs" />
     <Compile Include="Models\Product_Detail.cs" />
+    <Compile Include="Models\Refund_Detail.cs" />
     <Compile Include="Models\Shipping_Detail.cs" />
     <Compile Include="PaypalConfiguration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Attach\banana.jpg" />
-    <Content Include="Attach\broccoli.jpg" />
-    <Content Include="Attach\buttons.jpg" />
-    <Content Include="Attach\cabbage.jpg" />
-    <Content Include="Attach\capsicum.jpg" />
-    <Content Include="Attach\carrot.jpg" />
-    <Content Include="Attach\cauliflower.jpg" />
-    <Content Include="Attach\cherry.jpg" />
-    <Content Include="Attach\chestnuts.jpg" />
-    <Content Include="Attach\coconut.jpg" />
-    <Content Include="Attach\cucumber.jpg" />
-    <Content Include="Attach\frenchbean.jpg" />
-    <Content Include="Attach\gailan.jpg" />
-    <Content Include="Attach\garlic.jpg" />
-    <Content Include="Attach\grapes.jpg" />
-    <Content Include="Attach\grapesfruit.jpeg" />
-    <Content Include="Attach\hazelnuts.jpeg" />
-    <Content Include="Attach\kiwi.jpg" />
-    <Content Include="Attach\lemon.jpg" />
-    <Content Include="Attach\lettuce.jpg" />
-    <Content Include="Attach\mango.jpg" />
-    <Content Include="Attach\onion.jpg" />
-    <Content Include="Attach\orange.jpg" />
-    <Content Include="Attach\peach.jpg" />
-    <Content Include="Attach\peas.jpg" />
-    <Content Include="Attach\radish.jpg" />
-    <Content Include="Attach\spinach.jpg" />
-    <Content Include="Attach\tomato.jpg" />
-    <Content Include="Attach\turnip.jpg" />
-    <Content Include="Attach\watermelom.jpg" />
+    <Content Include="Attach\null.jpg" />
     <Content Include="Content\add.png" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
@@ -205,6 +176,7 @@
     <Content Include="Content\images\cauliflower.jpg" />
     <Content Include="Content\images\cauliflower.png" />
     <Content Include="Content\images\hazelnuts.jpg" />
+    <Content Include="Content\images\null.jpg" />
     <Content Include="Content\images\mango.png" />
     <Content Include="Content\images\minus-button.png" />
     <Content Include="Content\images\minus.png" />
@@ -879,9 +851,16 @@
     <Content Include="Views\Home\Orders.cshtml" />
     <Content Include="Views\Home\UpdateInformation.cshtml" />
     <Content Include="Views\Home\UpdatePassword.cshtml" />
+    <Content Include="Views\Admin\DeleteCategory.cshtml" />
+    <Content Include="Views\Admin\DeleteProduct.cshtml" />
+    <Content Include="Views\Admin\DeleteMember.cshtml" />
+    <Content Include="Views\Home\AddMember.cshtml" />
+    <Content Include="Views\Home\Invoice.cshtml" />
+    <Content Include="Views\Admin\Refund.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Properties\PublishProfiles\" />
     <Folder Include="Summary\vendor\choices.js\src\" />
     <Folder Include="Summary\vendor\choices.js\types\" />
     <Folder Include="Views\PayPal\" />

@@ -1,0 +1,39 @@
+﻿@model Volcano.Models.Category_Detail
+
+@{
+    ViewBag.Title = "Delete Category";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="container-fluid px-4">
+
+    <h1 class="mt-4">Category</h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item"><a href="~/Admin/Dashboard">Dashboard</a></li>
+        <li class="breadcrumb-item active">Delete Category</li>
+    </ol>
+
+    <div class="container-fluid px-1 py-5 mx-auto">
+        <div class="row d-flex justify-content-center">
+            <div class="col-xl-7 col-lg-8 col-md-9 col-11 text-center">
+                <h3>Delete Category</h3>
+                <div class="card">
+                    <h5 class="text-center mb-4">Volcano</h5>
+                    <form class="form-card" action="~/Admin/DeleteCategory" id="form1" method="post">
+                        <div class="row justify-content-between text-left">
+                            <div class="form-group col-sm-6 flex-column d-flex">
+                                <label class="form-control-label px-3">Category Name<span class="text-danger"> *</span></label>
+                                @Html.TextBoxFor(n => n.Cat_Name, new { @Value = Model.Cat_Name  , @readonly="true" })
+                                @Html.HiddenFor(n=>n.Cat_ID)
+                            </div>
+                        </div>
+                        <button type="submit" class="btn-block btn-primary">Delete Category</button>
+
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

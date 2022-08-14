@@ -1,0 +1,56 @@
+﻿
+@{
+    ViewBag.Title = "Invoice Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    List<Volcano.Models.Invoice_Detail> invoices = ViewBag.Invoice;
+}
+
+<div class="all-title-box">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <h2>INVOICE DETAILS</h2>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="">Home</a></li>
+                    <li class="breadcrumb-item active">Invoice Details</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="cart-box-main">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="table-main table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Shipping ID</th>
+                                <th>Product Name</th>
+                                <th>Price</th>
+                                <th>Quantity</th>
+                                <th>Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @for (int i = 0; i < invoices.Count; i++)
+                            {
+                                <tr>
+                                    <td>@invoices[i].Shipping_ID</td>
+                                    <td><strong>@invoices[i].Product_Detail.Prod_Name</strong></td>
+                                    <td>@invoices[i].Product_Detail.Price</td>
+                                    <td>@invoices[i].Quantity</td>
+                                    <td>@invoices[i].Price</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
